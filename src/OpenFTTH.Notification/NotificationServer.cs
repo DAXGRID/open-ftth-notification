@@ -15,9 +15,16 @@ internal sealed class NotificationServer : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _logger.LogInformation("Starting {Name}.", nameof(NotificationServer));
+        const string HOST_ADDRESS = "127.0.0.1";
+        const int IP = 64000;
 
-        using var server = new EchoServer(IPAddress.Any, 64001)
+        _logger.LogInformation(
+            "Starting {Name} on {Addresss} and {Port}.",
+            nameof(NotificationServer),
+            HOST_ADDRESS,
+            IP);
+
+        using var server = new EchoServer(HOST_ADDRESS, IP)
         {
             OptionNoDelay = true,
             OptionReuseAddress = true,
