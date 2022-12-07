@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3F25DE88-09F7-4AF4-BBBD-D3BDF4B11F98}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenFTTH.Notification", "src\OpenFTTH.Notification\OpenFTTH.Notification.csproj", "{B35D734E-D1B2-492E-9CED-41BF715AA54C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B35D734E-D1B2-492E-9CED-41BF715AA54C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B35D734E-D1B2-492E-9CED-41BF715AA54C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B35D734E-D1B2-492E-9CED-41BF715AA54C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B35D734E-D1B2-492E-9CED-41BF715AA54C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B35D734E-D1B2-492E-9CED-41BF715AA54C} = {3F25DE88-09F7-4AF4-BBBD-D3BDF4B11F98}
+	EndGlobalSection
+EndGlobal
