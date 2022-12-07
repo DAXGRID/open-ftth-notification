@@ -6,7 +6,7 @@ namespace OpenFTTH.Notification;
 internal sealed class NotificationServer : BackgroundService
 {
     const string HOST_ADDRESS = "127.0.0.1";
-    const int IP = 64000;
+    const int PORT = 8000;
 
     private readonly ILogger<NotificationServer> _logger;
     private readonly ILoggerFactory _loggerFactory;
@@ -18,7 +18,7 @@ internal sealed class NotificationServer : BackgroundService
     {
         _logger = logger;
         _loggerFactory = loggerFactory;
-        _server = new MulticastServer(HOST_ADDRESS, IP, _loggerFactory)
+        _server = new MulticastServer(HOST_ADDRESS, PORT, _loggerFactory)
         {
             OptionNoDelay = true,
             OptionReuseAddress = true,
@@ -31,7 +31,7 @@ internal sealed class NotificationServer : BackgroundService
             "Starting {Name} on {Addresss} and {Port}.",
             nameof(NotificationServer),
             HOST_ADDRESS,
-            IP);
+            PORT);
 
         _server.Start();
 
