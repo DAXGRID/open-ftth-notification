@@ -1,9 +1,10 @@
 using System.Net;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace OpenFTTH.Notification;
 
-internal sealed class NotificationServer
+internal sealed class NotificationServer : BackgroundService
 {
     private readonly ILogger<NotificationServer> _logger;
 
@@ -12,7 +13,7 @@ internal sealed class NotificationServer
         _logger = logger;
     }
 
-    public async Task Start(CancellationToken cancellationToken = default)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _logger.LogInformation("Starting {Name}.", nameof(NotificationServer));
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Core;
@@ -14,27 +15,31 @@ internal static class Program
 {
     public static async Task Main()
     {
-        using var cancellationTokenSource = new CancellationTokenSource();
-        var token = cancellationTokenSource.Token;
+        var host = new HostBuilder()
+            .ConfigureServices((hostContext, services) =>
+            {
+                services.AddSingleton<Setting>(GetSettings());
+                services.AddHostedService<NotificationServer>();
+                services.AddLogging(l => l.AddSerilog(GetLogger()));
+            })
+            .Build();
 
-        var serviceProvider = new ServiceCollection()
-            .AddLogging(l => l.AddSerilog(GetLogger()))
-            .AddSingleton<Setting>(GetSettings())
-            .AddSingleton<NotificationServer>()
-            .BuildServiceProvider();
-
-        var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
+        var loggerFactory = host.Services.GetService<ILoggerFactory>();
         var logger = loggerFactory!.CreateLogger(nameof(Program));
-        var notificationServer = serviceProvider.GetService<NotificationServer>();
 
         try
         {
-            await notificationServer!.Start(token).ConfigureAwait(true);
+            await host.StartAsync().ConfigureAwait(true);
+            await host.WaitForShutdownAsync().ConfigureAwait(true);
         }
         catch (Exception ex)
         {
             logger.LogError("{Exception}", ex);
             throw;
+        }
+        finally
+        {
+            logger.LogInformation("Shutting down.");
         }
     }
 
@@ -50,7 +55,7 @@ internal static class Program
     private static Logger GetLogger()
     {
         return new LoggerConfiguration()
-            .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+            .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
             .MinimumLevel.Override("System", LogEventLevel.Warning)
             .MinimumLevel.Information()
             .Enrich.FromLogContext()
