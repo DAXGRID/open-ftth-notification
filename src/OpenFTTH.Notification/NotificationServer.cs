@@ -1,4 +1,3 @@
-using System.Net;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -7,10 +6,14 @@ namespace OpenFTTH.Notification;
 internal sealed class NotificationServer : BackgroundService
 {
     private readonly ILogger<NotificationServer> _logger;
+    private readonly ILoggerFactory _loggerFactory;
 
-    public NotificationServer(ILogger<NotificationServer> logger)
+    public NotificationServer(
+        ILogger<NotificationServer> logger,
+        ILoggerFactory loggerFactory)
     {
         _logger = logger;
+        _loggerFactory = loggerFactory;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -24,7 +27,7 @@ internal sealed class NotificationServer : BackgroundService
             HOST_ADDRESS,
             IP);
 
-        using var server = new EchoServer(HOST_ADDRESS, IP)
+        using var server = new MulticastServer(HOST_ADDRESS, IP, _loggerFactory)
         {
             OptionNoDelay = true,
             OptionReuseAddress = true,
