@@ -5,8 +5,12 @@ namespace OpenFTTH.Notification;
 
 internal sealed class NotificationServer : BackgroundService
 {
+    const string HOST_ADDRESS = "127.0.0.1";
+    const int IP = 64000;
+
     private readonly ILogger<NotificationServer> _logger;
     private readonly ILoggerFactory _loggerFactory;
+    private readonly MulticastServer _server;
 
     public NotificationServer(
         ILogger<NotificationServer> logger,
@@ -14,27 +18,44 @@ internal sealed class NotificationServer : BackgroundService
     {
         _logger = logger;
         _loggerFactory = loggerFactory;
+        _server = new MulticastServer(HOST_ADDRESS, IP, _loggerFactory)
+        {
+            OptionNoDelay = true,
+            OptionReuseAddress = true,
+        };
     }
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        const string HOST_ADDRESS = "127.0.0.1";
-        const int IP = 64000;
-
         _logger.LogInformation(
             "Starting {Name} on {Addresss} and {Port}.",
             nameof(NotificationServer),
             HOST_ADDRESS,
             IP);
 
-        using var server = new MulticastServer(HOST_ADDRESS, IP, _loggerFactory)
+        _server.Start();
+
+        return Task.CompletedTask;
+    }
+
+    public override Task StopAsync(CancellationToken cancellationToken)
+    {
+        if (!_server.IsDisposed)
         {
-            OptionNoDelay = true,
-            OptionReuseAddress = true,
-        };
+            _logger.LogInformation("Stopping {Name}", nameof(MulticastServer));
+            _server.Stop();
+        }
 
-        server.Start();
+        return Task.CompletedTask;
+    }
 
-        await Task.CompletedTask.ConfigureAwait(false);
+    public override void Dispose()
+    {
+        if (!_server.IsDisposed)
+        {
+            _server.Dispose();
+        }
+
+        base.Dispose();
     }
 }
