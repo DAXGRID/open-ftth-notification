@@ -14,6 +14,9 @@ internal static class Program
 {
     public static async Task Main()
     {
+        using var cancellationTokenSource = new CancellationTokenSource();
+        var token = cancellationTokenSource.Token;
+
         var serviceProvider = new ServiceCollection()
             .AddLogging(l => l.AddSerilog(GetLogger()))
             .AddSingleton<Setting>(GetSettings())
@@ -26,9 +29,9 @@ internal static class Program
 
         try
         {
-            await notificationServer!.Start().ConfigureAwait(true);
+            await notificationServer!.Start(token).ConfigureAwait(true);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             logger.LogError("{Exception}", ex);
             throw;
