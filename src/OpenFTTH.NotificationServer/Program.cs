@@ -5,11 +5,8 @@ using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Formatting.Compact;
-using System.Text.Json;
 
 namespace OpenFTTH.NotificationServer;
-
-internal sealed record Setting { }
 
 internal static class Program
 {
@@ -18,7 +15,6 @@ internal static class Program
         var host = new HostBuilder()
             .ConfigureServices((hostContext, services) =>
             {
-                services.AddSingleton<Setting>(GetSettings());
                 services.AddHostedService<NotificationServerHost>();
                 services.AddLogging(l => l.AddSerilog(GetLogger()));
             })
@@ -41,15 +37,6 @@ internal static class Program
         {
             logger.LogInformation("Shutting down.");
         }
-    }
-
-    private static Setting GetSettings()
-    {
-        var settingsJson = JsonDocument.Parse(File.ReadAllText("appsettings.json"))
-            .RootElement.GetProperty("settings").ToString();
-
-        return JsonSerializer.Deserialize<Setting>(settingsJson) ??
-            throw new ArgumentException("Could not deserialize appsettings into settings.");
     }
 
     private static Logger GetLogger()
