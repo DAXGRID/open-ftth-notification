@@ -19,7 +19,7 @@ internal static class Program
             .ConfigureServices((hostContext, services) =>
             {
                 services.AddSingleton<Setting>(GetSettings());
-                services.AddHostedService<NotificationServer>();
+                services.AddHostedService<NotificationServerHost>();
                 services.AddLogging(l => l.AddSerilog(GetLogger()));
             })
             .Build();

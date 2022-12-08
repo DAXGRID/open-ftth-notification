@@ -3,17 +3,17 @@ using Microsoft.Extensions.Logging;
 
 namespace OpenFTTH.NotificationServer;
 
-internal sealed class NotificationServer : BackgroundService
+internal sealed class NotificationServerHost : BackgroundService
 {
     const string HOST_ADDRESS = "127.0.0.1";
     const int PORT = 8000;
 
-    private readonly ILogger<NotificationServer> _logger;
+    private readonly ILogger<NotificationServerHost> _logger;
     private readonly ILoggerFactory _loggerFactory;
     private readonly MulticastServer _server;
 
-    public NotificationServer(
-        ILogger<NotificationServer> logger,
+    public NotificationServerHost(
+        ILogger<NotificationServerHost> logger,
         ILoggerFactory loggerFactory)
     {
         _logger = logger;
@@ -29,7 +29,7 @@ internal sealed class NotificationServer : BackgroundService
     {
         _logger.LogInformation(
             "Starting {Name} on {Addresss} and {Port}.",
-            nameof(NotificationServer),
+            nameof(NotificationServerHost),
             HOST_ADDRESS,
             PORT);
 
