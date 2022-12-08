@@ -1,3 +1,3 @@
-# OpenFTTH notification
+# OpenFTTH notification server
 
-OpenFTTH notification, is a socket server, that is only purpose is to rebroadcast notifications between the OpenFTTH system components.
+A socket server, that is only purpose is to rebroadcast notifications between the OpenFTTH system components.

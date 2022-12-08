@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace OpenFTTH.Notification;
+namespace OpenFTTH.NotificationServer;
 
 internal sealed class NotificationServer : BackgroundService
 {

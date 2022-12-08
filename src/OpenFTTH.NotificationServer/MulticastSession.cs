@@ -2,7 +2,7 @@ using Microsoft.Extensions.Logging;
 using NetCoreServer;
 using System.Net.Sockets;
 
-namespace OpenFTTH.Notification;
+namespace OpenFTTH.NotificationServer;
 
 internal sealed class MulticastSession : TcpSession
 {

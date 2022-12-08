@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Logging;
 using NetCoreServer;
 
-namespace OpenFTTH.Notification;
+namespace OpenFTTH.NotificationServer;
 
 internal sealed class MulticastServer : TcpServer
 {
