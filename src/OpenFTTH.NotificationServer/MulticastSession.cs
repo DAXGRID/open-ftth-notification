@@ -1,26 +1,31 @@
 using Microsoft.Extensions.Logging;
 using NetCoreServer;
 using System.Net.Sockets;
+using System.Text;
 
 namespace OpenFTTH.NotificationServer;
 
-internal sealed class MulticastSession : TcpSession
+internal sealed class MulticastSession : WsSession
 {
     private readonly ILogger<MulticastSession> _logger;
 
     public MulticastSession(
-        TcpServer server,
+        WsServer server,
         ILogger<MulticastSession> logger) : base(server)
     {
         _logger = logger;
     }
 
-    protected override void OnReceived(byte[] buffer, long offset, long size)
+    public override void OnWsReceived(byte[] buffer, long offset, long size)
     {
-        this.Server.Multicast(buffer);
+        // We encode the message because there has been issues
+        // where not the whole message has been send,
+        // by always sending it as MultiCastText, it solves the issue.
+        var message = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
+        ((WsServer)Server).MulticastText(message);
     }
 
-    protected override void OnConnected()
+    public override void OnWsConnected(HttpRequest request)
     {
         _logger.LogInformation("New session connected with {Id}.", this.Id);
     }

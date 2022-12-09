@@ -18,11 +18,7 @@ internal sealed class NotificationServerHost : BackgroundService
     {
         _logger = logger;
         _loggerFactory = loggerFactory;
-        _server = new MulticastServer(HOST_ADDRESS, PORT, _loggerFactory)
-        {
-            OptionNoDelay = true,
-            OptionReuseAddress = true,
-        };
+        _server = new MulticastServer(HOST_ADDRESS, PORT, _loggerFactory);
     }
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -34,6 +30,9 @@ internal sealed class NotificationServerHost : BackgroundService
             PORT);
 
         _server.Start();
+
+        // We create a file in the tmp folder to indicate that the service is healthy.
+        using var _ = File.Create(Path.Combine(Path.GetTempPath(), "healthy"));
 
         return Task.CompletedTask;
     }
