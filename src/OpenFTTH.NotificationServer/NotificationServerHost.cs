@@ -33,6 +33,7 @@ internal sealed class NotificationServerHost : BackgroundService
 
         // We create a file in the tmp folder to indicate that the service is healthy.
         using var _ = File.Create(Path.Combine(Path.GetTempPath(), "healthy"));
+        _logger.LogInformation("{Service} is now healthy.", nameof (NotificationServerHost));
 
         return Task.CompletedTask;
     }
