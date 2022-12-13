@@ -13,7 +13,7 @@ internal static class Program
     public static async Task Main()
     {
         var host = new HostBuilder()
-            .ConfigureServices((hostContext, services) =>
+            .ConfigureServices((_, services) =>
             {
                 services.AddHostedService<NotificationServerHost>();
                 services.AddLogging(l => l.AddSerilog(GetLogger()));
