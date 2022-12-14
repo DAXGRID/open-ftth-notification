@@ -18,4 +18,4 @@ WORKDIR /app
 COPY --from=build-env /app/src/OpenFTTH.NotificationServer/out .
 ENTRYPOINT ["dotnet", "OpenFTTH.NotificationServer.dll"]
 
-EXPOSE 8000
+EXPOSE 80 443

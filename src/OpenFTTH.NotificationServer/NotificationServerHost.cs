@@ -1,3 +1,4 @@
+using System.Net;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -5,7 +6,7 @@ namespace OpenFTTH.NotificationServer;
 
 internal sealed class NotificationServerHost : BackgroundService
 {
-    const string HOST_ADDRESS = "127.0.0.1";
+    private readonly IPAddress HOST_ADDRESS = IPAddress.Any;
     const int PORT = 8000;
 
     private readonly ILogger<NotificationServerHost> _logger;

@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Sockets;
 using Microsoft.Extensions.Logging;
 using NetCoreServer;
@@ -10,7 +11,7 @@ internal sealed class MulticastServer : WsServer
     private readonly ILogger<MulticastServer> _logger;
 
     public MulticastServer(
-        string address,
+        IPAddress address,
         int port,
         ILoggerFactory loggerFactory) : base(address, port)
     {
