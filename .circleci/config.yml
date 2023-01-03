@@ -80,7 +80,7 @@ jobs:
           name: key-scan
           command: ssh-keyscan github.com >> ~/.ssh/known_hosts
       - run:
-          name: git clone open-ftth-chart
+          name: git clone charts repo
           command: git clone $GIT_CLONE_REPO
       - run:
           name: package and push
