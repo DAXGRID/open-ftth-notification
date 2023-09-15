@@ -51,7 +51,6 @@ jobs:
          root: .
          paths:
           - ./image.tar
-
   docker-publish-image:
     executor: docker-publisher
     steps:
